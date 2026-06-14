@@ -7,7 +7,19 @@ if [ ! -f .env ]; then
   exit 1
 fi
 
+set -a
 source .env
+set +a
+
+required_vars=(PLEX_DOMAIN REQUEST_DOMAIN SONARR_DOMAIN RADARR_DOMAIN PROWLARR_DOMAIN TORRENT_DOMAIN)
+
+for var in "${required_vars[@]}"; do
+  if [ -z "${!var:-}" ]; then
+    echo "Missing required variable: $var"
+    echo "Update .env before starting the stack."
+    exit 1
+  fi
+ done
 
 mkdir -p nginx/generated
 
