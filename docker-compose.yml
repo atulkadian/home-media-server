@@ -47,6 +47,8 @@ services:
       - ./config/prowlarr:/config
     ports:
       - "9696:9696"
+    depends_on:
+      - flaresolverr
     networks:
       - media-network
 
@@ -94,6 +96,18 @@ services:
       - ./config/overseerr:/app/config
     ports:
       - "5055:5055"
+    networks:
+      - media-network
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=info
+      - LOG_HTML=false
+      - CAPTCHA_SOLVER=none
+      - TZ=${TZ}
     networks:
       - media-network
 
