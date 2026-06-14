@@ -27,7 +27,7 @@ echo "Generating nginx configs..."
 
 for file in nginx/*.conf; do
   filename=$(basename "$file")
-  envsubst < "$file" > "nginx/generated/$filename"
+  envsubst '${PLEX_DOMAIN} ${REQUEST_DOMAIN} ${SONARR_DOMAIN} ${RADARR_DOMAIN} ${PROWLARR_DOMAIN} ${TORRENT_DOMAIN}' < "$file" > "nginx/generated/$filename"
 done
 
 echo "Creating nginx symlinks..."
