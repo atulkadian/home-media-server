@@ -7,11 +7,31 @@ if [ ! -f .env ]; then
   exit 1
 fi
 
+# If config directory exists, assume initial setup is already done
+if [ -d "config" ]; then
+  echo "Existing config directory detected. Skipping nginx setup..."
+
+  docker compose pull
+  docker compose up -d
+
+  echo
+  docker ps
+
+  exit 0
+fi
+
 set -a
 source .env
 set +a
 
-required_vars=(PLEX_DOMAIN REQUEST_DOMAIN SONARR_DOMAIN RADARR_DOMAIN PROWLARR_DOMAIN TORRENT_DOMAIN)
+required_vars=(
+  PLEX_DOMAIN
+  REQUEST_DOMAIN
+  SONARR_DOMAIN
+  RADARR_DOMAIN
+  PROWLARR_DOMAIN
+  TORRENT_DOMAIN
+)
 
 for var in "${required_vars[@]}"; do
   if [ -z "${!var:-}" ]; then
@@ -19,7 +39,7 @@ for var in "${required_vars[@]}"; do
     echo "Update .env before starting the stack."
     exit 1
   fi
- done
+done
 
 mkdir -p nginx/generated
 
@@ -41,11 +61,9 @@ for file in nginx/generated/*.conf; do
 done
 
 echo "Validating nginx config..."
-
 sudo nginx -t
 
 echo "Reloading nginx..."
-
 sudo systemctl reload nginx
 
 echo "Starting containers..."
