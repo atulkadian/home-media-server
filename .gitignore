@@ -1,0 +1,13 @@
+.env
+
+nginx/generated/
+
+config/**/logs/
+config/**/Logs/
+config/**/Cache/
+config/**/cache/
+config/**/Crash Reports/
+
+config/
+
+*.log
