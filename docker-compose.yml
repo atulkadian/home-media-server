@@ -1,20 +1,18 @@
 services:
-  plex:
-    image: lscr.io/linuxserver/plex:latest
-    container_name: plex
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
     restart: unless-stopped
+    user: "${PUID}:${PGID}"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
       - TZ=${TZ}
-      - VERSION=docker
-      - PLEX_CLAIM=${PLEX_CLAIM}
     volumes:
-      - ./config/plex:/config
-      - ${MEDIA_ROOT}/tv:/tv
-      - ${MEDIA_ROOT}/movies:/movies
+      - ./config/jellyfin:/config
+      - ./config/jellyfin-cache:/cache
+      - ${MEDIA_ROOT}/tv:/media/tv
+      - ${MEDIA_ROOT}/movies:/media/movies
     ports:
-      - "32400:32400"
+      - "8096:8096"
     networks:
       - media-network
 
@@ -86,14 +84,15 @@ services:
     networks:
       - media-network
 
-  overseerr:
-    image: sctx/overseerr:latest
-    container_name: overseerr
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
     restart: unless-stopped
     environment:
+      - LOG_LEVEL=info
       - TZ=${TZ}
     volumes:
-      - ./config/overseerr:/app/config
+      - ./config/jellyseerr:/app/config
     ports:
       - "5055:5055"
     networks:

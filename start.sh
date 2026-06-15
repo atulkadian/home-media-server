@@ -25,7 +25,7 @@ source .env
 set +a
 
 required_vars=(
-  PLEX_DOMAIN
+  JELLYFIN_DOMAIN
   REQUEST_DOMAIN
   SONARR_DOMAIN
   RADARR_DOMAIN
@@ -47,7 +47,7 @@ echo "Generating nginx configs..."
 
 for file in nginx/*.conf; do
   filename=$(basename "$file")
-  envsubst '${PLEX_DOMAIN} ${REQUEST_DOMAIN} ${SONARR_DOMAIN} ${RADARR_DOMAIN} ${PROWLARR_DOMAIN} ${TORRENT_DOMAIN}' < "$file" > "nginx/generated/$filename"
+  envsubst '${JELLYFIN_DOMAIN} ${REQUEST_DOMAIN} ${SONARR_DOMAIN} ${RADARR_DOMAIN} ${PROWLARR_DOMAIN} ${TORRENT_DOMAIN}' < "$file" > "nginx/generated/$filename"
 done
 
 echo "Creating nginx symlinks..."
