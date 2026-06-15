@@ -91,6 +91,11 @@ services:
     environment:
       - LOG_LEVEL=info
       - TZ=${TZ}
+      - FORCE_IPV4_FIRST=true
+    dns:
+      - 9.9.9.9
+      - 8.8.8.8
+      - 1.1.1.1
     volumes:
       - ./config/jellyseerr:/app/config
     ports:
