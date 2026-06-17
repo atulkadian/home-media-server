@@ -85,7 +85,7 @@ services:
       - media-network
 
   jellyseerr:
-    image: fallenbagel/jellyseerr:latest
+    image: seerr/seerr:latest
     container_name: jellyseerr
     restart: unless-stopped
     environment:
